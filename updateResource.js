@@ -25,27 +25,24 @@ try {
 
     /*Pegar o ID e NOME de todos os routes de ISP Vendas*/
     async function listRoutersByNameAndId() {
-        
         routers().then(data=>{
-            let listRouters = data
+            let listRouter = data
             let cont = 0
-            for (let value of listRouters) {
+            for (let value of listRouter) {
                 console.log(`Router name: ${value.name}\nRouter ID: ${value._id}`);
                 console.log("");
                 cont++;
               }
               console.log(`Total de ISPs: ${cont}`);
         });
-        return listRouters
     }
-    listRoutersByNameAndId();
-
+listRoutersByNameAndId()
     async function updateVariableByRouter(id) {
         routerApi.patch(`/router/settings/add-variables/${id}`, {
             variables: {
                 blockedPhoneNumbers: "[\"553799999998\",\"5513974255154\",\"5513991688975\",\"5513996230639\",\"5513991552083\",\"5513981442153\"]"
             },
-            syncBlip: true
+            syncBlip: false
           }
         ).then(response => {
             console.log(response.status);
@@ -56,7 +53,6 @@ try {
       //updateVariableByRouter("644aa97731be6731634da3ff");
 
     async function updateVariableOfAllRouter(){
-
         for (let value of listRouter) {
            console.log(value.name);
          }
