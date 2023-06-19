@@ -42,10 +42,10 @@ try {
                 }
                 return newData
         });
-        console.log(refactorList);
+        //console.log(refactorList);
         return refactorList
     }
-    listRoutersByNameAndId()
+    // listRoutersByNameAndId()
     async function updateVariableByRouter(id) {
         routerApi.patch(`/router/settings/add-variables/${id}`, {
             variables: {
@@ -62,7 +62,7 @@ try {
     //   updateVariableByRouter("644aa97731be6731634da3ff");
 
     async function updateVariableOfAllRouter(){
-        let data = await listRoutersByNameAndId()
+        //let data = await listRoutersByNameAndId()
     //     for (let value of data) {
     //     routerApi.patch(`/router/settings/add-variables/${value.id}`, {
     //         variables: {
@@ -79,8 +79,8 @@ try {
 
 
         //USAR PARA FINS DE TESTES
-        data = [{id: "644aa97731be6731634da3ff", name: "test",
-        id: "637b96fe5d497e2148d9265d", name: "test"}]
+        let data = [{id: "644aa97731be6731634da3ff", name: "supercabotest"}, {
+        id: "637b96fe5d497e2148d9265d", name: "ageroutertest"}]
         for (let value of data) {
             routerApi.patch(`/router/settings/add-variables/${value.id}`, {
                 variables: {
@@ -90,12 +90,12 @@ try {
                 }
             ).then(response => {
                 console.log(response.status);
-                console.log("Atualização bem sucedida");
+                console.log("Atualização bem sucedida no bot: ", value.name);
                 console.log("Novo valor da variável: ", response.data.data.variables.blockedPhoneNumbers);
             })
-            }
+        }
       }
-    //   updateVariableOfAllRouter();
+      updateVariableOfAllRouter();
     } catch (error) {
     console.log(error)
     }
