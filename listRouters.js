@@ -1,11 +1,15 @@
 const axios = require('axios')
+const dotenv = require('dotenv')
+
+dotenv.config();
+
 
  const routerApi = axios.create({
      baseURL: `https://witcom-core.mundiale.com.br`,
      headers: {
           'accept': 'application/json',
           'Content-Type': 'application/json',
-          'x-api-key': '8c271044-96af-48ce-80fa-59bf9ef79f45'
+          'x-api-key': process.env.API_KEY
     }
  })
 class listRouters {
@@ -21,4 +25,4 @@ class listRouters {
     }
 }
 
- module.exports = listRouters
+module.exports = listRouters
