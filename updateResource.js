@@ -46,7 +46,7 @@ try {
         return refactorList
     }
     // listRoutersByNameAndId()
-    async function updateVariableByRouter(id) {
+    async function updateVariableByRouterById(id) {
         routerApi.patch(`/router/settings/add-variables/${id}`, {
             variables: {
                 blockedPhoneNumbers: "[\"553799999998\",\"5513974255154\",\"5513991688975\",\"5513996230639\",\"5513991552083\",\"5513981442153\"]"
@@ -59,7 +59,7 @@ try {
             console.log("Novo valor da variável: ", response.data.data.variables.blockedPhoneNumbers);
         })
       }
-    //   updateVariableByRouter("644aa97731be6731634da3ff");
+    //   updateVariableByRouterById("644aa97731be6731634da3ff");
 
     async function updateVariableOfAllRouter(){
         //let data = await listRoutersByNameAndId()
@@ -95,10 +95,24 @@ try {
             })
         }
       }
-      updateVariableOfAllRouter();
+      //updateVariableOfAllRouter();
+
+      async function updateVariableOfAllRouter2(id){
+        let variablesResource = await variables()
+        variablesResource.addressFields.pf.extras.addressType.condominio.condominiumName = true;
+        //  return console.log(JSON.stringify(variablesResource.addressFields.pf))
+        routerApi.patch(`/router/settings/add-variables/${id}`, {
+            variables:{
+                addressFields: variablesResource.addressFields,
+                syncBlip: false
+          }
+        }).then(response => {
+            console.log(response.status);
+            console.log("Atualização bem sucedida");
+            console.log("Novo valor da variável: ", JSON.stringify(response.data.data.variables.addressFields));
+        })
+      }
+      updateVariableOfAllRouter2('644aa97731be6731634da3ff')
     } catch (error) {
     console.log(error)
     }
-
-
-

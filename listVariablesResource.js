@@ -3,7 +3,6 @@ const dotenv = require('dotenv')
 
 dotenv.config();
 
-
 const routerApi = axios.create({
    baseURL: `https://witcom-core.mundiale.com.br`,
    headers: {
@@ -28,4 +27,3 @@ class listVariablesResource {
 }
 
 module.exports = listVariablesResource
-
