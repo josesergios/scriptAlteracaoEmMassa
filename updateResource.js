@@ -16,8 +16,8 @@ dotenv.config();
 
 try {
     /*LISTAR TODAS AS VARIÁVEIS DO RESOURCE*/
-    async function variables(){
-        return listVariablesResource.variablesResource();
+    async function variables(id){
+        return listVariablesResource.variablesResource(id);
     }
     // variables().then(data=>console.log(data));
 
@@ -98,21 +98,26 @@ try {
       //updateVariableOfAllRouter();
 
       async function updateVariableOfAllRouter2(id){
-        let variablesResource = await variables()
-        variablesResource.addressFields.pf.extras.addressType.condominio.condominiumName = true;
-        //  return console.log(JSON.stringify(variablesResource.addressFields.pf))
-        routerApi.patch(`/router/settings/add-variables/${id}`, {
-            variables:{
-                addressFields: variablesResource.addressFields,
-                syncBlip: false
-          }
-        }).then(response => {
-            console.log(response.status);
-            console.log("Atualização bem sucedida");
-            console.log("Novo valor da variável: ", JSON.stringify(response.data.data.variables.addressFields));
-        })
+        //let data = await listRoutersByNameAndId()
+        let data = [{id: "644aa97731be6731634da3ff", name: "supercabotest"}, {
+            id: "637b96fe5d497e2148d9265d", name: "ageroutertest"}]
+        for (let value of data) {
+            let variablesResource = await variables(value.id)
+            //  return console.log(JSON.stringify(variablesResource.addressFields.pf))
+            variablesResource.addressFields.pf.extras.addressType.condominio.condominiumName = true;
+            routerApi.patch(`/router/settings/add-variables/${value.id}`, {
+                variables:{
+                    addressFields: variablesResource.addressFields,
+                    syncBlip: false
+            }
+            }).then(response => {
+                console.log(response.status);
+                console.log("Atualização bem sucedida");
+                console.log("Novo valor da variável: ", JSON.stringify(response.data.data.variables.addressFields));
+            })
       }
-      updateVariableOfAllRouter2('644aa97731be6731634da3ff')
+    }
+    //   updateVariableOfAllRouter2()
     } catch (error) {
     console.log(error)
     }

@@ -13,9 +13,9 @@ const routerApi = axios.create({
 })
 
 class listVariablesResource {
-   static async variablesResource() {
+   static async variablesResource(id) {
       try {
-          let listVariables = await routerApi.get(`/router/644aa97731be6731634da3ff`)
+          let listVariables = await routerApi.get(`/router/${id}`)
           let data = listVariables.data.data
           let variablesResource = data.settings.variables
           //console.log(variablesResource)
