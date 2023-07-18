@@ -97,27 +97,116 @@ try {
       }
       //updateVariableOfAllRouter();
 
-      async function updateVariableOfAllRouter2(id){
+    //   async function updateVariableOfAllRouter2(id){
+    //     //let data = await listRoutersByNameAndId()
+    //     let data = [{id: "644aa97731be6731634da3ff", name: "supercabotest"}, {
+    //         id: "637b96fe5d497e2148d9265d", name: "ageroutertest"}]
+    //     for (let value of data) {
+    //         let variablesResource = await variables(value.id)
+    //         //  return console.log(JSON.stringify(variablesResource.addressFields.pf))
+    //         variablesResource.addressFields.pf.extras.addressType.condominio.condominiumName = true;
+    //         routerApi.patch(`/router/settings/add-variables/${value.id}`, {
+    //             variables:{
+    //                 addressFields: variablesResource.addressFields,
+    //                 syncBlip: false
+    //         }
+    //         }).then(response => {
+    //             console.log(response.status);
+    //             console.log("Atualização bem sucedida");
+    //             console.log("Novo valor da variável: ", JSON.stringify(response.data.data.variables.addressFields));
+    //         })
+    //   }
+    // }
+    //   updateVariableOfAllRouter2()
+
+
+
+    function mergeObjects(obj1, obj2) {
+        let newObj = { ...obj1 }
+        for (const prop in obj2) {
+            if (obj2.hasOwnProperty(prop)) {
+                if (
+                    typeof obj2[prop] === 'object' &&
+                    obj2[prop] !== null &&
+                    typeof obj1[prop] === 'object' &&
+                    obj1[prop] !== null
+                ) {
+                    newObj[prop] = mergeObjects(obj1[prop], obj2[prop])
+                } else {
+                    newObj[prop] = obj2[prop]
+                }
+            }
+        }
+        return newObj
+    }
+
+
+    async function updateVariableOfAllRouter3(){
+        const obj2 = {
+            "addressFields": {
+                "pf": {
+                    "zipCode": false,
+                    "checkIsGeneral": false,
+                    "addressType": true,
+                    "addressNumber": false,
+                    "complement": true,
+                    "addressReference": true,
+                    "getViability": false,
+                    "extras": {
+                      "addressType": {
+                        "condominio": {
+                          "condominiumName": true,
+                          "apartmentNumber": false,
+                          "apartmentBlock": false
+                        }
+                      }
+                    }
+                  },
+                  "pj": {
+                    "zipCode": false,
+                    "checkIsGeneral": false,
+                    "addressType": true,
+                    "addressNumber": false,
+                    "complement": true,
+                    "addressReference": true,
+                    "getViability": false,
+                    "extras": {
+                      "addressType": {
+                        "condominio": {
+                          "condominiumName": true,
+                          "apartmentNumber": true,
+                          "apartmentBlock": true
+                        }
+                      }
+                    }
+                }
+            }
+          }
         //let data = await listRoutersByNameAndId()
-        let data = [{id: "644aa97731be6731634da3ff", name: "supercabotest"}, {
-            id: "637b96fe5d497e2148d9265d", name: "ageroutertest"}]
+        let data = [{id: "644aa97731be6731634da3ff", name: "supercabotest"},
+                    {id: "637b96fe5d497e2148d9265d", name: "ageroutertest"},
+                    {id: "63ced415ab44d3230752c1bb", name: "alaresRouterTest"},
+                    {id: "627e3bb503907d678b2da6f5", name: "algarRouterTest"},
+                    {id: "627d1650fca07b90f41f596d", name: "aonetRouterTest"}]
         for (let value of data) {
             let variablesResource = await variables(value.id)
+            let newObj = mergeObjects(variablesResource, obj2)
+            //console.log(newObj.addressFields);
             //  return console.log(JSON.stringify(variablesResource.addressFields.pf))
-            variablesResource.addressFields.pf.extras.addressType.condominio.condominiumName = true;
+            //variablesResource.addressFields.pf.extras.addressType.condominio.condominiumName = true;
+            let addressFields = newObj.addressFields
             routerApi.patch(`/router/settings/add-variables/${value.id}`, {
                 variables:{
-                    addressFields: variablesResource.addressFields,
-                    syncBlip: false
+                    addressFields
             }
             }).then(response => {
                 console.log(response.status);
                 console.log("Atualização bem sucedida");
-                console.log("Novo valor da variável: ", JSON.stringify(response.data.data.variables.addressFields));
+                //console.log("Novo valor da variável: ", JSON.stringify(response.data.data.variables.addressFields));
             })
       }
     }
-    //   updateVariableOfAllRouter2()
+    updateVariableOfAllRouter3();
     } catch (error) {
     console.log(error)
     }
